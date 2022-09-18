@@ -28,5 +28,5 @@ Return: A collection of n positive integers, for which the kth integer represent
 with open('ex11.txt', 'r') as f:
     n = int(f.readline())
 
-    G = nx.read_edgelist(f, nodetype=int, create_using=nx.Graph)
-    G.add_nodes_from(range(1,n+1))
+    #G = nx.read_edgelist(f, nodetype=int, create_using=nx.Graph)
+    #G.add_nodes_from(range(1,n+1))
