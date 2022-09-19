@@ -24,9 +24,27 @@ each tree Tk is followed by a pair of nodes xk and yk in Tk.
 
 Return: A collection of n positive integers, for which the kth integer represents the distance between xk and yk in Tk.
 '''
+from Bio import Phylo
+import io
 
-with open('ex11.txt', 'r') as f:
-    n = int(f.readline())
+with open('rosalind_nwck.txt', 'r') as f:
+    trees = [i.split('\n') for i in f.read().strip().split('\n\n')]
 
-    #G = nx.read_edgelist(f, nodetype=int, create_using=nx.Graph)
-    #G.add_nodes_from(range(1,n+1))
+f = open("output.txt", "w")
+
+for newick_tree, pairs  in trees:
+
+    x, y = pairs.split(" ")
+    tree = Phylo.read(io.StringIO(newick_tree), "newick")
+    
+    #Phylo.draw(tree)
+    #print(tree)
+
+    clades = tree.find_clades()
+    for clade in clades:
+        clade.branch_length = 1  
+    
+    f.write(f"{tree.distance(x,y)} ")
+
+f.write("\n")
+f.close()
