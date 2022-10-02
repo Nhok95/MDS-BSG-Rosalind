@@ -1,2 +1,8 @@
-with open('rosalind_tree.txt', 'r') as f:
-    n = int(f.readline())
+with open('ex20.txt', 'r') as f:
+    taxa = [line.strip() for line in f.readline().split(" ")]
+    newick1 = f.readline()
+    newick2 = f.readline()
+
+print(taxa)
+
+
