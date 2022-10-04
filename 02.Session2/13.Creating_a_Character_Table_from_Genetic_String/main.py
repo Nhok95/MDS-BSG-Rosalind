@@ -1,6 +1,6 @@
 
 dna_strings = []
-with open('ex13.txt', 'r') as f:
+with open('rosalind_cstr.txt', 'r') as f:
     for line in f:
         dna_strings.append(line.strip())
 

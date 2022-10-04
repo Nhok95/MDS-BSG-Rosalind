@@ -28,17 +28,23 @@ import networkx as nx
 import pylab
 import io
 
-with open('ex12.txt', 'r') as f:
+with open('rosalind_ctbl.txt', 'r') as f:
     newick_tree = f.read().strip()
 
 taxa = newick_tree.replace(';','').replace('(','').replace(')','').replace(',', ' ').split(" ")
 taxa.sort()
 
-print(taxa)
+#print(taxa)
 
 
 tree = Phylo.read(io.StringIO(newick_tree), "newick")
+#print(tree)
+#Phylo.draw(tree)
+
 G = Phylo.to_networkx(tree)
+
+#nx.draw(G, with_labels=True, font_weight="bold")
+#pylab.show()
 
 f = open("output.txt", "w")
 
@@ -49,28 +55,34 @@ for e in G.edges():
     we generate 2 subtrees.
     '''
     C = [1]*len(taxa)
-    
-    if (str(e[0].name) == 'None' and str(e[1].name) == 'None'):
-        print(f"edge {e}")
+
+    #print(f"edge->  {e[0]}: {e[0].clades}, {e[1]}: {e[1].clades}")
+
+    if (G.degree(e[0]) > 2 and G.degree(e[1]) > 2):
+    #if (str(e[0].name) == 'None' and str(e[1].name) == 'None'):
+        #print(f"edge {e}")
         aux = G.copy()
         aux.remove_edge(e[0], e[1])
 
         components = [G.subgraph(c).copy() for c in nx.connected_components(aux)]
-        print(f"component 1: {components[0]}")
-        print(f"component 2: {components[1]}")
+        #print(f"    component 1: {components[0]}")
+        #print(f"    component 2: {components[1]}")
 
         for node in components[0].nodes():
             if ((str(node.name)) != 'None'):
                 index = taxa.index(node.name)
-                print(f"    node: {node.name}; index: {index}")
+                #print(f"        node: {node.name}; index: {index}")
                 C[index] = 0 # belongs to subset 0
 
-        #nx.draw(aux, with_labels=True, font_weight="bold")
-        #pylab.show()
-        result = ''.join(map(str, C))
+        if C.count(1) < 2 or C.count(0) < 2:
+            pass
+        else:
+            #nx.draw(aux, with_labels=True, font_weight="bold")
+            #pylab.show()
+            result = ''.join(map(str, C))
 
-        print(result)
-        f.write(f"{result}\n")
+            #print(result)
+            f.write(f"{result}\n")
 
 f.close()
 

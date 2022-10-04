@@ -1,0 +1,1 @@
+((dog,(monkey,horse)),(((elephant,mouse),(hamster,robot)),(cat,lion)));
